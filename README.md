@@ -1,3 +1,3 @@
-# Event Planer with node API
+# WBS-Project 6: Event Planer with node API
 
-## Team work Alissa, Monica, Dandy
+## Teamwork Alissa, Monica, Dandy
