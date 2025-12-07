@@ -1,14 +1,37 @@
 import { useState, useEffect } from "react";
+import { addUser } from "../utils/apiAccess";
 
-type Direction = "init" | "success" | "badRequest" | "userExist";
-
-function submitSignUp(event) {
-  event.preventDefault();
-  console.log("Sign Up Submit Event");
-}
+type SignUpState =
+  | "fetching"
+  | "init"
+  | "success"
+  | "badRequest"
+  | "userExist"
+  | "noEmail"
+  | "noPass"
+  | "passTooShort";
 
 export function SignUp() {
-  const [signUpState, setSignUpState] = useState((): Direction => "init");
+  const [signUpState, setSignUpState] = useState((): SignUpState => "init");
+
+  function submitSignUp(event) {
+    event.preventDefault();
+    console.log("Sign Up Submit Event");
+    // setSignUpState("fetching");
+    console.log(event.target.password.value);
+
+    if (event.target.email.value.length === 0) setSignUpState("noEmail");
+    else if (event.target.password.value.length === 0) setSignUpState("noPass");
+    else if (event.target.password.value.length < 8)
+      setSignUpState("passTooShort");
+    else setSignUpState("init");
+
+    // console.log("signUpState:", signUpState);
+    if (signUpState !== "init") return;
+
+    addUser(event.target.email.value, event.target.password.value);
+  }
+
   return (
     <>
       <div className="flex flex-col items-center justify-center">
@@ -19,7 +42,12 @@ export function SignUp() {
           <label htmlFor="password">Password: </label>
           <input type="password" name="password" id="password" />
           <button
-            className=" rounded-xl bg-indigo-700 hover:bg-fuchsia-700"
+            disabled={signUpState === "fetching" ? true : false}
+            className={
+              signUpState === "fetching"
+                ? "bg-gray-700 rounded-xl"
+                : "rounded-xl bg-indigo-700 hover:bg-fuchsia-700"
+            }
             type="submit"
           >
             Register
@@ -27,12 +55,16 @@ export function SignUp() {
         </form>
         <p className="text-red-600 mt-2">
           {signUpState === "userExist"
-            ? "🛑 User already exists!"
-            : signUpState === "badRequest"
-              ? "🛑 Password too short! At least 8 characters!"
+            ? "⚠️ User already exists!"
+            : signUpState === "badRequest" || signUpState === "passTooShort"
+              ? "⚠️ Password too short! At least 8 characters!"
               : signUpState === "success"
                 ? "Sign up successful!"
-                : "♥️ Please fill out form for sign up ♥️"}
+                : signUpState === "noEmail"
+                  ? "Please enter E-Mail address!"
+                  : signUpState === "noPass"
+                    ? "Please enter password with at least 8 characters!"
+                    : "Please fill out form for sign up!"}
         </p>
       </div>
     </>
