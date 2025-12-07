@@ -29,7 +29,9 @@ export function SignUp() {
     // console.log("signUpState:", signUpState);
     if (signUpState !== "init") return;
 
-    addUser(event.target.email.value, event.target.password.value);
+    addUser(event.target.email.value, event.target.password.value).then(
+      (data) => console.log("return", data)
+    );
   }
 
   return (

@@ -1,3 +1,5 @@
+const API_URL = "http://localhost:3001";
+
 export function createUser(email: string, password: string): object {
   return { email: email, password: password };
 }
@@ -15,13 +17,9 @@ function regexCheckEmail(input: string): boolean {
   return regex.test(input);
 }
 
-export function addUser(email: string, password: string) {
+export function addUser(email: string, password: string): Promise<object> {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  // myHeaders.append(
-  //   "Authorization",
-  //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ1c2VyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzY0OTM4MTAzLCJleHAiOjE3Njg1MzgxMDN9.lX1ksrrMX1hizpKAwT0jgXKoAS9uYxQABnV4VLFVwr0"
-  // );
 
   const raw = JSON.stringify({
     email: email,
@@ -35,8 +33,19 @@ export function addUser(email: string, password: string) {
     redirect: "follow",
   };
 
-  fetch("http://localhost:3001/api/users", requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.error(error));
+  return fetch("http://localhost:3001/api/users", requestOptions)
+    .then((response) => {
+      // if (!response.ok) {
+      //   console.log(response.body);
+      //   throw new Error("Request Error");
+      // }
+      return response.json();
+    })
+    .then((resultData) => {
+      console.log(resultData);
+      return resultData;
+    })
+    .catch((error) => {
+      return error;
+    });
 }
