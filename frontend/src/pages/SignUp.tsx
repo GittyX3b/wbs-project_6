@@ -66,36 +66,52 @@ export function SignUp() {
   return (
     <>
       <div className="flex flex-col items-center justify-center">
-        <h1 className="font-bold text-2xl m-4">Sign Up</h1>
+        <h1 className="font-bold text-2xl text-shadow-gray-500 text-shadow-2xs m-4">
+          Sign Up
+        </h1>
         <form className="flex flex-col" onSubmit={submitSignUp}>
-          <label htmlFor="email">E-Mail: </label>
-          <input type="email" name="email" id="email" />
-          <label htmlFor="password">Password: </label>
-          <input type="password" name="password" id="password" />
+          <label className="text-black font-bold" htmlFor="email">
+            E-Mail:{" "}
+          </label>
+          <input
+            className="border-2 rounded-md mb-2 text-black p-0.4"
+            type="email"
+            name="email"
+            id="email"
+          />
+          <label className="text-black font-bold" htmlFor="password">
+            Password:{" "}
+          </label>
+          <input
+            className="border-2 rounded-md mb-2 text-black p-0.4"
+            type="password"
+            name="password"
+            id="password"
+          />
           <button
             disabled={signUpState === "fetching" ? true : false}
             className={
               signUpState === "fetching"
-                ? "bg-gray-700 rounded-xl"
-                : "rounded-xl bg-indigo-700 hover:bg-fuchsia-700"
+                ? "btn btn-sm mt-2 mb-2 bg-gray-700"
+                : "btn btn-sm mt-2 mb-2 hover:bg-gray-600"
             }
             type="submit"
           >
             Register
           </button>
         </form>
-        <p className="text-red-600 mt-2">
+        <p className="text-red-600 font-bold mt-2">
           {signUpState === "userExist"
-            ? "⚠️ User already exists!"
+            ? "⚠️ User already exists ⚠️"
             : signUpState === "badRequest" || signUpState === "passTooShort"
-              ? "⚠️ Password too short! At least 8 characters!"
+              ? "⚠️ Password too short! At least 8 characters ⚠️"
               : signUpState === "success"
                 ? "Sign up successful!"
                 : signUpState === "noEmail"
-                  ? "Please enter E-Mail address!"
+                  ? "⚠️ Please enter E-Mail address ⚠️"
                   : signUpState === "noPass"
-                    ? "Please enter password with at least 8 characters!"
-                    : "Please fill out form for sign up!"}
+                    ? "⚠️ Please enter password with at least 8 characters ⚠️"
+                    : "Please fill out form for sign up"}
         </p>
       </div>
     </>
