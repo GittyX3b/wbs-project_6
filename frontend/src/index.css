@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+@import "@styles/text.css";
+
 .maxwidth-1600 {
-  max-width: 1200px;
+  max-width: 1600px;
 }
