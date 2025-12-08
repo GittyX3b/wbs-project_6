@@ -1,4 +1,5 @@
 import { Home } from "./Home.tsx";
-import { SignUp } from "./SignUp.tsx";
+import { SignIn } from "./SignIn.tsx";
+import { CreateEvent } from "./CreateEvent.tsx";
 
-export { Home, SignUp };
+export { Home, CreateEvent, SignIn };
