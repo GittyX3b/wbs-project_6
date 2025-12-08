@@ -17,6 +17,12 @@ function regexCheckEmail(input: string): boolean {
   return regex.test(input);
 }
 
+/**
+ * Add a user to Event API database
+ * @param email
+ * @param password
+ * @returns
+ */
 export function addUser(email: string, password: string): Promise<object> {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -33,16 +39,17 @@ export function addUser(email: string, password: string): Promise<object> {
     redirect: "follow",
   };
 
-  return fetch("http://localhost:3001/api/users", requestOptions)
+  /* TODO: Add try...catch and error handling */
+  return fetch("http://localhost:3001/api/users", requestOptions as RequestInit)
     .then((response) => {
       // if (!response.ok) {
-      //   console.log(response.body);
-      //   throw new Error("Request Error");
+      //   console.log(response.status);
+      //   throw new Error(response.status);
       // }
       return response.json();
     })
     .then((resultData) => {
-      console.log(resultData);
+      // console.log(resultData);
       return resultData;
     })
     .catch((error) => {

@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { addUser } from "../utils/apiAccess";
 
+/**
+ * Define string literal type SignUpState
+ */
 type SignUpState =
   | "fetching"
   | "init"
@@ -11,26 +14,52 @@ type SignUpState =
   | "noPass"
   | "passTooShort";
 
+// enum ServerErrorCode {
+//   Success = 200,
+//   BadPassword = "User Already Exist",
+//   UserExits = "",
+// }
+
 export function SignUp() {
   const [signUpState, setSignUpState] = useState((): SignUpState => "init");
+  const [redirect, SetRedirect] = useState("");
 
   function submitSignUp(event) {
     event.preventDefault();
     console.log("Sign Up Submit Event");
-    // setSignUpState("fetching");
+
     console.log(event.target.password.value);
+    let newSignUpState: SignUpState = "init";
 
-    if (event.target.email.value.length === 0) setSignUpState("noEmail");
-    else if (event.target.password.value.length === 0) setSignUpState("noPass");
+    if (event.target.email.value.length === 0) newSignUpState = "noEmail";
+    else if (event.target.password.value.length === 0)
+      newSignUpState = "noPass";
     else if (event.target.password.value.length < 8)
-      setSignUpState("passTooShort");
-    else setSignUpState("init");
+      newSignUpState = "passTooShort";
 
-    // console.log("signUpState:", signUpState);
-    if (signUpState !== "init") return;
+    setSignUpState(newSignUpState);
+    console.log("signUpState:", newSignUpState);
+    console.log("email", event.target.email.value);
+    console.log("pass:", event.target.password.value);
+    if (newSignUpState !== "init") {
+      console.log("Returned");
+      return;
+    }
 
+    setSignUpState("fetching");
     addUser(event.target.email.value, event.target.password.value).then(
-      (data) => console.log("return", data)
+      (data) => {
+        /* Error case: Response Code 400, 409 */
+        if ("error" in data) {
+          console.error("Error Case:", data);
+          if (data.error === "User Already Exist") setSignUpState("userExist");
+          else setSignUpState("badRequest");
+          /* Success: Response Code 200 */
+        } else {
+          console.log("Success case:", data);
+          SetRedirect("signin");
+        }
+      }
     );
   }
 
