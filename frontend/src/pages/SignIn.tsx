@@ -97,12 +97,12 @@ export { SignIn };
 const validate = ({ email, password }) => {
   const newErrors = {};
 
-  if (!email.trim()) {
+  if (!email) {
     newErrors.email = "Please provide your email.";
   } else if (!/\S+@\S+\.\S+/.test(email)) {
     newErrors.email = "Invalid email format.";
   }
-  if (!password.trim()) {
+  if (!password) {
     newErrors.password = "Please provide your password";
   } else if (password.length < 8) {
     newErrors.password = "Password length must be at least 8 characters long.";
