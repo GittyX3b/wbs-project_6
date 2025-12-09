@@ -1,8 +1,9 @@
 import { Navigate, Outlet } from "react-router";
+import { useAuth } from "../contexts/AuthContext";
 
 const ProtectedLayout = () => {
-  const auth = { token: false };
-  return auth.token ? <Outlet /> : <Navigate to="/login" />;
+  const { user } = useAuth();
+  return user ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export { ProtectedLayout };

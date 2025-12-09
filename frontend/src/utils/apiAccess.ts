@@ -78,4 +78,29 @@ export function addUser(email: string, password: string): Promise<object> {
     });
 }
 
-export { apiBaseUrl, createUser, fetchEvents, type EventsRequest };
+type LoginRequest = {
+  token: string;
+  user: {
+    id: number;
+    email: string;
+  };
+};
+async function signIn(email: string, password: string): Promise<LoginRequest> {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: email, password: password }),
+  };
+
+  const res = await fetch(apiBaseUrl + "api/auth/login", requestOptions);
+
+  const data: LoginRequest = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || "Eroare la autentificare");
+  }
+
+  return data;
+}
+
+export { apiBaseUrl, createUser, fetchEvents, type EventsRequest, signIn };
