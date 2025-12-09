@@ -1,8 +1,3 @@
-import {
-  apiBaseUrl,
-  createUser,
-  fetchEvents,
-  type EventsRequest,
-} from "./apiAccess.ts";
+import { apiBaseUrl, fetchEvents, type EventsRequest } from "./apiAccess.ts";
 
-export { apiBaseUrl, createUser, fetchEvents, type EventsRequest };
+export { apiBaseUrl, fetchEvents, type EventsRequest };
