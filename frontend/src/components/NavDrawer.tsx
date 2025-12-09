@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import { House, CalendarPlus2 } from "lucide-react";
+import { House, CalendarPlus2, CalendarDays } from "lucide-react";
 
 export function NavDrawer() {
   return (
@@ -9,14 +9,14 @@ export function NavDrawer() {
         aria-label="close sidebar"
         className="drawer-overlay"
       ></label>
-      <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
+      <div className="flex min-h-screen flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
         {/* Sidebar content here */}
         <ul className="menu w-full grow">
           {/* List item */}
           <li>
             <NavLink
               to="/"
-              className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+              className="is-drawer-close:tooltip is-drawer-close:tooltip-right pb-10"
               data-tip="Home"
             >
               {/* Home icon */}
@@ -25,6 +25,17 @@ export function NavDrawer() {
             </NavLink>
           </li>
 
+          {/* List item  #TODO: hide until loggedIn*/}
+          <li>
+            <NavLink
+              to="my-events"
+              className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+              data-tip="CreateEvent"
+            >
+              <CalendarDays size={20} />
+              <span className="is-drawer-close:hidden">My Events</span>
+            </NavLink>
+          </li>
           {/* List item  #TODO: hide until loggedIn*/}
           <li>
             <NavLink

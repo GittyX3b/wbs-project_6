@@ -1,8 +1,12 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes:
+    corporate --default,
+    dim --prefersdark;
+}
 
 @import "@styles/text.css";
 
-.maxwidth-1600 {
-  max-width: 1600px;
+.maxwidth-app {
+  max-width: 100%;
 }

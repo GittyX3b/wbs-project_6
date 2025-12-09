@@ -1,6 +1,8 @@
-const EventCard = ({ title, description, date }) => {
+import { NavLink } from "react-router";
+
+const EventCard = ({ title, description, date, id }) => {
   return (
-    <div className="card bg-base-100 card-xl shadow-sm w-full cursor-pointer">
+    <div className="card bg-base-200 card-xl shadow-sm w-full cursor-pointer">
       <div className="card-body">
         <h3 className="card-title">{title}</h3>
         <span className="cursive text-md text-neutral-400 pb-4">
@@ -13,7 +15,9 @@ const EventCard = ({ title, description, date }) => {
             : description}
         </p>
         <div className="card-actions justify-end">
-          <button className="btn btn-primary w-full mt-4">See Details</button>
+          <NavLink to={`event/${id}`} className="btn btn-primary w-full mt-4">
+            See Details
+          </NavLink>
         </div>
       </div>
     </div>

@@ -31,7 +31,7 @@ const Home = () => {
   if (error) return <div>Fehler: {error}</div>;
 
   return (
-    <div className="p-10">
+    <div>
       <h2>Upcoming Events ({eventData?.totalCount})</h2>
 
       <div className="grid md:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr] gap-5">
