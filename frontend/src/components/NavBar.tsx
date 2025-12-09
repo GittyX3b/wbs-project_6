@@ -16,9 +16,12 @@ export function NavBar() {
       <div className="px-4 text-2xl font-bold">Event Planner</div>
       <div>
         {user && (
-          <button className="btn btn-xs" onClick={logout}>
-            Logout
-          </button>
+          <>
+            Hallo {user.email}
+            <button className="btn btn-xs" onClick={logout}>
+              Logout
+            </button>
+          </>
         )}
 
         {!user && (
