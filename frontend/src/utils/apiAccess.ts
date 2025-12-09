@@ -9,6 +9,21 @@ type EventsRequest = {
   results: any[];
 };
 
+type Events = {
+  title: string;
+  description: string;
+  date: Date;
+  location: string | Location;
+  latitude?: number;
+  longitude?: number;
+};
+
+type Location = {
+  street: string;
+  postalCode: number;
+  city: string;
+};
+
 async function fetchEvents(
   page: number,
   limit: number
@@ -39,7 +54,7 @@ function regexCheckEmail(input: string): boolean {
 }
 
 /**
- * Add a user to Event API database
+ * Add an user to Event API database
  * @param email
  * @param password
  * @returns
@@ -60,13 +75,8 @@ export function addUser(email: string, password: string): Promise<object> {
     redirect: "follow",
   };
 
-  /* TODO: Add try...catch and error handling */
   return fetch("http://localhost:3001/api/users", requestOptions as RequestInit)
     .then((response) => {
-      // if (!response.ok) {
-      //   console.log(response.status);
-      //   throw new Error(response.status);
-      // }
       return response.json();
     })
     .then((resultData) => {
