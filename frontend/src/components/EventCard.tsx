@@ -1,0 +1,55 @@
+import { NavLink } from "react-router";
+interface EventCardProps {
+  id: string;
+  title: string;
+  description: string;
+  date: Date;
+}
+
+const EventCard = ({ title, description, date, id }: EventCardProps) => {
+  return (
+    <div className="card bg-base-200 card-xl shadow-sm w-full cursor-pointer">
+      <div className="card-body">
+        <h3 className="card-title">{title}</h3>
+        <span className="cursive text-md text-neutral-400 pb-4">
+          {convertDate(date)}
+        </span>
+
+        <p>
+          {description.length > 100
+            ? description.slice(0, 100) + "…"
+            : description}
+        </p>
+
+        <div className="card-actions justify-end">
+          <NavLink to={`event/${id}`} className="btn btn-primary w-full mt-4">
+            See Details
+          </NavLink>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export { EventCard };
+
+function convertDate(date: string | Date): string {
+  // Ensure it's a Date object
+  const d = date instanceof Date ? date : new Date(date);
+
+  // Format the date part
+  const datePart = d.toLocaleDateString("de-DE", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  // Format the time part
+  const timePart = d.toLocaleTimeString("de-DE", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  return `${datePart} - ${timePart} Uhr`;
+}
