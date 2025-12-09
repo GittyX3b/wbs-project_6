@@ -14,12 +14,6 @@ type SignUpState =
   | "noPass"
   | "passTooShort";
 
-// enum ServerErrorCode {
-//   Success = 200,
-//   BadPassword = "User Already Exist",
-//   UserExits = "",
-// }
-
 export function SignUp() {
   const [signUpState, setSignUpState] = useState((): SignUpState => "init");
   const [redirect, SetRedirect] = useState("");
@@ -70,20 +64,15 @@ export function SignUp() {
           Sign Up
         </h1>
         <form className="flex flex-col" onSubmit={submitSignUp}>
-          <label className="text-black font-bold" htmlFor="email">
-            E-Mail:{" "}
+          <label className="font-bold" htmlFor="email">
+            E-Mail:
+          </label>
+          <input className="input mb-2" type="email" name="email" id="email" />
+          <label className="font-bold" htmlFor="password">
+            Password:
           </label>
           <input
-            className="border-2 rounded-md mb-2 text-black p-0.4"
-            type="email"
-            name="email"
-            id="email"
-          />
-          <label className="text-black font-bold" htmlFor="password">
-            Password:{" "}
-          </label>
-          <input
-            className="border-2 rounded-md mb-2 text-black p-0.4"
+            className="input mb-2"
             type="password"
             name="password"
             id="password"
@@ -93,7 +82,7 @@ export function SignUp() {
             className={
               signUpState === "fetching"
                 ? "btn btn-sm mt-2 mb-2 bg-gray-700"
-                : "btn btn-sm mt-2 mb-2 hover:bg-gray-600"
+                : "btn btn-primary mt-5 mb-2"
             }
             type="submit"
           >
