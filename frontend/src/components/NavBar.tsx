@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 
 export function NavBar() {
   return (
-    <nav className="navbar w-full bg-base-300 flex justify-between px-7">
+    <nav className="navbar w-full bg-base-300 flex justify-between pr-7 sticky top-0 z-10 shadow-lg">
       <label
         htmlFor="my-drawer-4"
         aria-label="open sidebar"

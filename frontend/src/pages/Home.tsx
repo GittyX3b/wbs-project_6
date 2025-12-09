@@ -34,7 +34,7 @@ const Home = () => {
     <div>
       <h2>Upcoming Events ({eventData?.totalCount})</h2>
 
-      <div className="grid md:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr] gap-5">
+      <div className="grid sm:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr] 2xl:grid-cols-[1fr_1fr_1fr_1fr] gap-5">
         {eventData?.results.map((item) => {
           return <EventCard {...item} key={item.id} />;
         })}
