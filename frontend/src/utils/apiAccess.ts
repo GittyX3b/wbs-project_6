@@ -97,7 +97,7 @@ async function signIn(email: string, password: string): Promise<LoginRequest> {
   const data: LoginRequest = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.error || "Eroare la autentificare");
+    throw new Error(data.error || "Something went wrong");
   }
 
   return data;
