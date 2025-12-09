@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
 
 export function NavBar() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   return (
     <nav className="navbar w-full bg-base-300 bg-green-200 flex justify-between px-7">
       <label
@@ -15,7 +15,11 @@ export function NavBar() {
       </label>
       <div className="px-4 text-2xl font-bold">Event Planner</div>
       <div>
-        {user && <button className="btn btn-xs">Logout</button>}
+        {user && (
+          <button className="btn btn-xs" onClick={logout}>
+            Logout
+          </button>
+        )}
 
         {!user && (
           <>

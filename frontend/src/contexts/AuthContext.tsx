@@ -19,7 +19,14 @@ export default function AuthContextProvider({ children }) {
     }
   }
 
-  return <AuthContext value={{ token, user, login }}>{children}</AuthContext>;
+  function logout() {
+    setToken(null);
+    setUser(null);
+  }
+
+  return (
+    <AuthContext value={{ token, user, login, logout }}>{children}</AuthContext>
+  );
 }
 
 export function useAuth() {
