@@ -1,7 +1,9 @@
 import { PanelLeftOpen } from "lucide-react";
 import { NavLink } from "react-router";
+import { useAuth } from "../contexts/AuthContext";
 
 export function NavBar() {
+  const { user } = useAuth();
   return (
     <nav className="navbar w-full bg-base-300 bg-green-200 flex justify-between px-7">
       <label
@@ -13,13 +15,18 @@ export function NavBar() {
       </label>
       <div className="px-4 text-2xl font-bold">Event Planner</div>
       <div>
-        {/* TODO: if already signed in ? show avatar an username */}
-        <NavLink to="login" className="btn btn-xs mr-2">
-          Login
-        </NavLink>
-        <NavLink to="signup" className="btn btn-xs ">
-          Sign Up
-        </NavLink>
+        {user && <button className="btn btn-xs">Logout</button>}
+
+        {!user && (
+          <>
+            <NavLink to="login" className="btn btn-xs mr-2">
+              Login
+            </NavLink>
+            <NavLink to="signup" className="btn btn-xs">
+              Sign Up
+            </NavLink>
+          </>
+        )}
       </div>
     </nav>
   );
