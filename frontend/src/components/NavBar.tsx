@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 export function NavBar() {
   const { user, logout } = useAuth();
+
   return (
     <nav className="navbar w-full bg-base-300 flex justify-between pr-7 sticky top-0 z-10 shadow-lg">
       <label

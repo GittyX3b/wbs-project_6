@@ -30,7 +30,7 @@ export function NavDrawer() {
             <NavLink
               to="my-events"
               className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-              data-tip="CreateEvent"
+              data-tip="My Events"
             >
               <CalendarDays size={22} />
               <span className="is-drawer-close:hidden w-20">My Events</span>
