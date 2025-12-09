@@ -41,6 +41,7 @@ const SignIn = () => {
         navigate("/create-event");
       } catch (err) {
         setError(err);
+      } finally {
         setLoading(false);
       }
     }
@@ -94,8 +95,8 @@ const SignIn = () => {
 
 export { SignIn };
 
-const validate = ({ email, password }) => {
-  const newErrors = {};
+function validate({ email, password }: FormData) {
+  const newErrors: Partial<FormData> = {};
 
   if (!email) {
     newErrors.email = "Please provide your email.";
@@ -108,4 +109,4 @@ const validate = ({ email, password }) => {
     newErrors.password = "Password length must be at least 8 characters long.";
   }
   return newErrors;
-};
+}
