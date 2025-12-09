@@ -14,27 +14,28 @@ export function NavBar() {
         <PanelLeftOpen className="is-drawer-close:hidden" />
       </label>
       <div className="px-4 text-2xl font-bold">Event Planner</div>
-      <div>
-        {user && (
-          <>
-            Hallo {user.email}
-            <button className="btn btn-xs" onClick={logout}>
-              Logout
-            </button>
-          </>
-        )}
 
-        {!user && (
-          <>
-            <NavLink to="login" className="btn btn-xs mr-2">
-              Login
-            </NavLink>
-            <NavLink to="signup" className="btn btn-xs">
-              Sign Up
-            </NavLink>
-          </>
-        )}
-      </div>
+      {user && (
+        <div className="flex items-center gap-2">
+          <p className="text-xs">
+            Hallo <strong>{user.email}</strong>
+          </p>
+          <button className="btn btn-xs" onClick={logout}>
+            Logout
+          </button>
+        </div>
+      )}
+
+      {!user && (
+        <div>
+          <NavLink to="login" className="btn btn-xs mr-2">
+            Login
+          </NavLink>
+          <NavLink to="signup" className="btn btn-xs">
+            Sign Up
+          </NavLink>
+        </div>
+      )}
     </nav>
   );
 }
