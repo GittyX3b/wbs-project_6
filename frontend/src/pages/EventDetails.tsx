@@ -1,5 +1,13 @@
+import { useParams } from "react-router";
+
 const EventDetails = () => {
-  return <div>EventDetails.tsx</div>;
+  const params = useParams();
+
+  return (
+    <div className="bg-green-200 min-h-screen p-15">
+      EventDetails.tsx - {params.id}
+    </div>
+  );
 };
 
 export { EventDetails };

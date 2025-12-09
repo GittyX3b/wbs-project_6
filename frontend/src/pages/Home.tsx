@@ -1,6 +1,6 @@
 import { fetchEvents, type EventsRequest } from "@utils";
 import { useEffect, useState } from "react";
-import { EventCard } from "@components";
+import { EventCard, Hero } from "@components";
 
 const Home = () => {
   const [page, _setPage] = useState(1);
@@ -32,12 +32,15 @@ const Home = () => {
 
   return (
     <div>
-      <h2>Upcoming Events ({eventData?.totalCount})</h2>
+      <Hero />
+      <div className="p-15">
+        <h2>Upcoming Events ({eventData?.totalCount})</h2>
 
-      <div className="grid sm:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr] 2xl:grid-cols-[1fr_1fr_1fr_1fr] gap-5">
-        {eventData?.results.map((item) => {
-          return <EventCard {...item} key={item.id} />;
-        })}
+        <div className="grid md:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr] 2xl:grid-cols-[1fr_1fr_1fr_1fr] gap-5">
+          {eventData?.results.map((item) => {
+            return <EventCard {...item} key={item.id} />;
+          })}
+        </div>
       </div>
     </div>
   );

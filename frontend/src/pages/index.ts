@@ -1,7 +1,9 @@
-import { Home } from "@pages/Home.tsx";
-import { EventDetails } from "@pages/EventDetails.tsx";
-import { MyEvents } from "@pages/MyEvents.tsx";
-import { CreateEvent } from "@pages/CreateEvent.tsx";
-import { SignIn } from "@pages/SignIn.tsx";
+import { Home } from "@pages/Home";
+import { EventDetails } from "@pages/EventDetails";
+import { MyEvents } from "@pages/MyEvents";
+import { CreateEvent } from "@pages/CreateEvent";
+import { SignIn } from "@pages/SignIn";
+import { AboutUs } from "@pages/AboutUs";
+import { Contact } from "@pages/Contact";
 
-export { Home, EventDetails, CreateEvent, SignIn, MyEvents };
+export { Home, EventDetails, CreateEvent, SignIn, MyEvents, AboutUs, Contact };

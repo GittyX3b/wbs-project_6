@@ -1,6 +1,12 @@
 import { NavLink } from "react-router";
+interface EventCardProps {
+  id: string;
+  title: string;
+  description: string;
+  date: Date;
+}
 
-const EventCard = ({ title, description, date, id }) => {
+const EventCard = ({ title, description, date, id }: EventCardProps) => {
   return (
     <div className="card bg-base-200 card-xl shadow-sm w-full cursor-pointer">
       <div className="card-body">
@@ -14,6 +20,7 @@ const EventCard = ({ title, description, date, id }) => {
             ? description.slice(0, 100) + "…"
             : description}
         </p>
+
         <div className="card-actions justify-end">
           <NavLink to={`event/${id}`} className="btn btn-primary w-full mt-4">
             See Details

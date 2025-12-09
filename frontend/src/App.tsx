@@ -1,5 +1,13 @@
 import { MainLayout, ProtectedLayout } from "@layouts";
-import { Home, EventDetails, SignIn, CreateEvent, MyEvents } from "@pages";
+import {
+  Home,
+  EventDetails,
+  SignIn,
+  CreateEvent,
+  MyEvents,
+  AboutUs,
+  Contact,
+} from "@pages";
 import { Route, Routes } from "react-router";
 import { SignUp } from "./pages/SignUp";
 
@@ -15,7 +23,9 @@ function App() {
             <Route path="/create-event" element={<CreateEvent />} />
             <Route path="/my-events" element={<MyEvents />} />
           </Route>
-          <Route path="/event/:slug" element={<EventDetails />} />
+          <Route path="/event/:id" element={<EventDetails />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/contact" element={<Contact />} />
         </Route>
       </Routes>
     </>
