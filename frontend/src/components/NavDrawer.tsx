@@ -1,7 +1,11 @@
 import { NavLink } from "react-router";
 import { House, CalendarPlus2, CalendarDays } from "lucide-react";
 
+import { useAuth } from "../contexts/AuthContext";
+
 export function NavDrawer() {
+  const { user, logout } = useAuth();
+
   return (
     <div className="drawer-side is-drawer-close:overflow-visible shadow-lg">
       <label
@@ -26,27 +30,33 @@ export function NavDrawer() {
           </li>
 
           {/* List item  #TODO: hide until loggedIn*/}
-          <li>
-            <NavLink
-              to="my-events"
-              className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-              data-tip="CreateEvent"
-            >
-              <CalendarDays size={22} />
-              <span className="is-drawer-close:hidden w-20">My Events</span>
-            </NavLink>
-          </li>
+          {user && (
+            <li>
+              <NavLink
+                to="my-events"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="CreateEvent"
+              >
+                <CalendarDays size={22} />
+                <span className="is-drawer-close:hidden w-20">My Events</span>
+              </NavLink>
+            </li>
+          )}
           {/* List item  #TODO: hide until loggedIn*/}
-          <li>
-            <NavLink
-              to="create-event"
-              className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-              data-tip="CreateEvent"
-            >
-              <CalendarPlus2 size={22} />
-              <span className="is-drawer-close:hidden w-30">Create Event</span>
-            </NavLink>
-          </li>
+          {user && (
+            <li>
+              <NavLink
+                to="create-event"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="CreateEvent"
+              >
+                <CalendarPlus2 size={22} />
+                <span className="is-drawer-close:hidden w-30">
+                  Create Event
+                </span>
+              </NavLink>
+            </li>
+          )}
         </ul>
       </div>
     </div>
