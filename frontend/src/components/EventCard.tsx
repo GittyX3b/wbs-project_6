@@ -1,12 +1,26 @@
 import { NavLink } from "react-router";
+import { Pencil, Trash } from "lucide-react";
+
 interface EventCardProps {
-  id: string;
+  id: number;
   title: string;
   description: string;
   date: Date;
+  editable: boolean;
 }
 
-const EventCard = ({ title, description, date, id }: EventCardProps) => {
+const EventCard = ({
+  title,
+  description,
+  date,
+  id,
+  editable,
+}: EventCardProps) => {
+  const handleDeletion = (eventId: number) =>
+    console.log("delete event " + eventId);
+  const handleEventEdit = (eventId: number) =>
+    console.log("edit event " + eventId);
+
   return (
     <div className="card bg-base-200 card-xl shadow-sm w-full cursor-pointer">
       <div className="card-body">
@@ -21,10 +35,28 @@ const EventCard = ({ title, description, date, id }: EventCardProps) => {
             : description}
         </p>
 
-        <div className="card-actions justify-end">
-          <NavLink to={`event/${id}`} className="btn btn-primary w-full mt-4">
+        <div
+          className={`card-actions justify-end mt-4 ${editable && "grid grid-cols-[1fr_4fr_1fr]"}`}
+        >
+          {editable && (
+            <button
+              className="btn btn-soft btn-error p-0"
+              onClick={() => handleDeletion(id)}
+            >
+              <Trash size={18} />
+            </button>
+          )}
+          <NavLink to={`event/${id}`} className="btn btn-soft btn-info w-full ">
             See Details
           </NavLink>
+          {editable && (
+            <button
+              className="btn btn-soft btn-warning p-0"
+              onClick={() => handleEventEdit(id)}
+            >
+              <Pencil size={18} />
+            </button>
+          )}
         </div>
       </div>
     </div>
