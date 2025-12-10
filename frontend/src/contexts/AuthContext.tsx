@@ -1,9 +1,17 @@
 import { createContext, use, useState } from "react";
-import { signIn } from "@utils/apiAccess";
+import { fetchData, apiBaseUrl } from "@utils/apiAccess";
 
-type User = {
+type UserType = {
   id: number;
   email: string;
+};
+
+type UserDataType = {
+  token: string;
+  user: {
+    id: number;
+    email: string;
+  };
 };
 
 const AuthContext = createContext(null);
@@ -12,20 +20,28 @@ export default function AuthContextProvider({ children }) {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
-  const [user, setUser] = useState<User | null>(
+  const [user, setUser] = useState<UserType | null>(
     JSON.parse(localStorage.getItem("user"))
   );
 
   async function login(email: string, password: string) {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email, password: password }),
+    };
     try {
-      const data = await signIn(email, password);
+      const data = await fetchData<UserDataType>(
+        apiBaseUrl + "api/auth/login",
+        requestOptions
+      );
 
       setToken(data.token);
       localStorage.setItem("token", data.token);
       setUser(data.user);
       localStorage.setItem("user", JSON.stringify(data.user));
-    } catch (error) {
-      throw new Error(error);
+    } catch (error: unknown) {
+      if (error instanceof Error) throw new Error(error.message);
     }
   }
 
