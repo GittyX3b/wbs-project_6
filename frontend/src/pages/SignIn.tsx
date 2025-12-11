@@ -1,4 +1,8 @@
-import { useState } from "react";
+import {
+  type ChangeEventHandler,
+  type FormEventHandler,
+  useState,
+} from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -15,19 +19,19 @@ type FormData = {
 const SignIn = () => {
   const [formData, setFormData] = useState<FormData>(initialState);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Partial<FormData>>({});
   const [error, setError] = useState<string | null>();
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value.trim(),
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     const validationErrors = validate(formData);
