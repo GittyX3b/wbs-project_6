@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type FormEvent } from "react";
+import { useNavigate, Link } from "react-router";
+import { useAuth } from "../contexts/AuthContext";
 import { addUser } from "../utils/apiAccess";
 
 /**
@@ -17,44 +19,52 @@ type SignUpState =
 export function SignUp() {
   const [signUpState, setSignUpState] = useState((): SignUpState => "init");
   const [redirect, SetRedirect] = useState("");
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-  function submitSignUp(event) {
+  useEffect(() => {
+    if (user) navigate("/my-events");
+  });
+
+  function submitSignUp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     console.log("Sign Up Submit Event");
 
-    console.log(event.target.password.value);
+    console.log(event.currentTarget.password.value);
     let newSignUpState: SignUpState = "init";
 
-    if (event.target.email.value.length === 0) newSignUpState = "noEmail";
-    else if (event.target.password.value.length === 0)
+    if (event.currentTarget.email.value.length === 0)
+      newSignUpState = "noEmail";
+    else if (event.currentTarget.password.value.length === 0)
       newSignUpState = "noPass";
-    else if (event.target.password.value.length < 8)
+    else if (event.currentTarget.password.value.length < 8)
       newSignUpState = "passTooShort";
 
     setSignUpState(newSignUpState);
     console.log("signUpState:", newSignUpState);
-    console.log("email", event.target.email.value);
-    console.log("pass:", event.target.password.value);
+    console.log("email", event.currentTarget.email.value);
+    console.log("pass:", event.currentTarget.password.value);
     if (newSignUpState !== "init") {
       console.log("Returned");
       return;
     }
 
     setSignUpState("fetching");
-    addUser(event.target.email.value, event.target.password.value).then(
-      (data) => {
-        /* Error case: Response Code 400, 409 */
-        if ("error" in data) {
-          console.error("Error Case:", data);
-          if (data.error === "User Already Exist") setSignUpState("userExist");
-          else setSignUpState("badRequest");
-          /* Success: Response Code 200 */
-        } else {
-          console.log("Success case:", data);
-          SetRedirect("signin");
-        }
+    addUser(
+      event.currentTarget.email.value,
+      event.currentTarget.password.value
+    ).then((data) => {
+      /* Error case: Response Code 400, 409 */
+      if ("error" in data) {
+        console.error("Error Case:", data);
+        if (data.error === "User Already Exist") setSignUpState("userExist");
+        else setSignUpState("badRequest");
+        /* Success: Response Code 200 */
+      } else {
+        console.log("Success case:", data);
+        SetRedirect("signin");
       }
-    );
+    });
   }
 
   return (
@@ -63,32 +73,55 @@ export function SignUp() {
         <h1 className="font-bold text-2xl text-shadow-gray-500 text-shadow-2xs m-4">
           Sign Up
         </h1>
-        <form className="flex flex-col" onSubmit={submitSignUp}>
-          <label className="font-bold" htmlFor="email">
-            E-Mail:
-          </label>
-          <input className="input mb-2" type="email" name="email" id="email" />
-          <label className="font-bold" htmlFor="password">
-            Password:
-          </label>
-          <input
-            className="input mb-2"
-            type="password"
-            name="password"
-            id="password"
-          />
-          <button
-            disabled={signUpState === "fetching" ? true : false}
-            className={
-              signUpState === "fetching"
-                ? "btn btn-sm mt-2 mb-2 bg-gray-700"
-                : "btn btn-primary mt-5 mb-2"
-            }
-            type="submit"
-          >
-            Register
-          </button>
-        </form>
+        <div className="card card-xl w-full md:max-w-xl bg-base-200 shadow-sm p-4">
+          <form className="w-full" onSubmit={submitSignUp}>
+            <fieldset className="fieldset mb-4">
+              <label
+                className="fieldset-legend text-sm font-bold"
+                htmlFor="email"
+              >
+                E-Mail:
+              </label>
+              <input
+                className="w-full input"
+                type="email"
+                name="email"
+                id="email"
+              />
+              <label
+                className="fieldset-legend text-sm font-bold"
+                htmlFor="password"
+              >
+                Password:
+              </label>
+              <input
+                className="w-full input"
+                type="password"
+                name="password"
+                id="password"
+              />
+            </fieldset>
+            <div className="card-actions justify-end">
+              <button
+                disabled={signUpState === "fetching" ? true : false}
+                className={
+                  signUpState === "fetching"
+                    ? "btn btn-sm bg-gray-700"
+                    : "btn btn-primary"
+                }
+                type="submit"
+              >
+                Register
+              </button>
+            </div>
+          </form>
+          <p>
+            Already have an account?
+            <Link to="/login" className="link ml-2">
+              Sign in
+            </Link>
+          </p>
+        </div>
         <p className="text-red-600 font-bold mt-2">
           {signUpState === "userExist"
             ? "⚠️ User already exists ⚠️"

@@ -1,28 +1,42 @@
 import { createContext, use, useState } from "react";
 import { fetchData, apiBaseUrl } from "@utils/apiAccess";
 
-type UserType = {
+type User = {
   id: number;
   email: string;
 };
 
-type UserDataType = {
+type UserType = {
   token: string;
-  user: {
-    id: number;
-    email: string;
-  };
+  user: User;
 };
 
-const AuthContext = createContext(null);
+type AuthContextType = {
+  token: string | null;
+  user: User | null;
+  login: (email: string, password: string) => void;
+  logout: () => void;
+};
 
-export default function AuthContextProvider({ children }) {
+const AuthContext = createContext<AuthContextType>({
+  token: null,
+  user: null,
+  login: () => {},
+  logout: () => {},
+});
+
+export default function AuthContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
-  const [user, setUser] = useState<UserType | null>(
-    JSON.parse(localStorage.getItem("user"))
-  );
+  const [user, setUser] = useState<User | null>(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
   async function login(email: string, password: string) {
     const requestOptions = {
@@ -31,7 +45,7 @@ export default function AuthContextProvider({ children }) {
       body: JSON.stringify({ email: email, password: password }),
     };
     try {
-      const data = await fetchData<UserDataType>(
+      const data = await fetchData<UserType>(
         apiBaseUrl + "api/auth/login",
         requestOptions
       );
@@ -58,5 +72,9 @@ export default function AuthContextProvider({ children }) {
 }
 
 export function useAuth() {
-  return use(AuthContext);
+  const context = use(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within AuthContextProvider");
+  }
+  return context;
 }
