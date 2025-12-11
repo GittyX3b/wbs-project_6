@@ -1,6 +1,7 @@
 import {
   type ChangeEventHandler,
   type FormEventHandler,
+  useEffect,
   useState,
 } from "react";
 import { useNavigate } from "react-router";
@@ -21,8 +22,12 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [error, setError] = useState<string | null>();
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) navigate("/my-events");
+  });
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setFormData((prev) => ({
@@ -41,11 +46,8 @@ const SignIn = () => {
       try {
         setLoading(true);
         await login(formData.email, formData.password);
-
-        navigate("/my-events");
       } catch (err: unknown) {
         if (err instanceof Error) setError(err.message);
-      } finally {
         setLoading(false);
       }
     }
