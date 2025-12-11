@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router";
+import { useAuth } from "../contexts/AuthContext";
 import { addUser } from "../utils/apiAccess";
 
 /**
@@ -17,6 +19,12 @@ type SignUpState =
 export function SignUp() {
   const [signUpState, setSignUpState] = useState((): SignUpState => "init");
   const [redirect, SetRedirect] = useState("");
+  const { user, login } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) navigate("/my-events");
+  });
 
   function submitSignUp(event) {
     event.preventDefault();
@@ -63,32 +71,55 @@ export function SignUp() {
         <h1 className="font-bold text-2xl text-shadow-gray-500 text-shadow-2xs m-4">
           Sign Up
         </h1>
-        <form className="flex flex-col" onSubmit={submitSignUp}>
-          <label className="font-bold" htmlFor="email">
-            E-Mail:
-          </label>
-          <input className="input mb-2" type="email" name="email" id="email" />
-          <label className="font-bold" htmlFor="password">
-            Password:
-          </label>
-          <input
-            className="input mb-2"
-            type="password"
-            name="password"
-            id="password"
-          />
-          <button
-            disabled={signUpState === "fetching" ? true : false}
-            className={
-              signUpState === "fetching"
-                ? "btn btn-sm mt-2 mb-2 bg-gray-700"
-                : "btn btn-primary mt-5 mb-2"
-            }
-            type="submit"
-          >
-            Register
-          </button>
-        </form>
+        <div className="card card-xl w-full md:max-w-xl bg-base-200 shadow-sm p-4">
+          <form className="w-full" onSubmit={submitSignUp}>
+            <fieldset className="fieldset mb-4">
+              <label
+                className="fieldset-legend text-sm font-bold"
+                htmlFor="email"
+              >
+                E-Mail:
+              </label>
+              <input
+                className="w-full input"
+                type="email"
+                name="email"
+                id="email"
+              />
+              <label
+                className="fieldset-legend text-sm font-bold"
+                htmlFor="password"
+              >
+                Password:
+              </label>
+              <input
+                className="w-full input"
+                type="password"
+                name="password"
+                id="password"
+              />
+            </fieldset>
+            <div className="card-actions justify-end">
+              <button
+                disabled={signUpState === "fetching" ? true : false}
+                className={
+                  signUpState === "fetching"
+                    ? "btn btn-sm bg-gray-700"
+                    : "btn btn-primary"
+                }
+                type="submit"
+              >
+                Register
+              </button>
+            </div>
+          </form>
+          <p>
+            Already have an account?
+            <Link to="/login" className="link ml-2">
+              Sign in
+            </Link>
+          </p>
+        </div>
         <p className="text-red-600 font-bold mt-2">
           {signUpState === "userExist"
             ? "⚠️ User already exists ⚠️"
