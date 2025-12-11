@@ -15,7 +15,7 @@ export function NavDrawer() {
       ></label>
       <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-16 is-drawer-open:w-50">
         {/* Sidebar content here */}
-        <ul className="menu w-full grow">
+        <ul className="menu w-full grow pt-4">
           {/* List item */}
           <li>
             <NavLink
@@ -30,16 +30,18 @@ export function NavDrawer() {
           </li>
 
           {/* List item  #TODO: hide until loggedIn*/}
-          <li>
-            <NavLink
-              to="my-events"
-              className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-              data-tip="My Events"
-            >
-              <CalendarDays size={22} />
-              <span className="is-drawer-close:hidden w-20">My Events</span>
-            </NavLink>
-          </li>
+          {user && (
+            <li>
+              <NavLink
+                to="my-events"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="My Events"
+              >
+                <CalendarDays size={22} />
+                <span className="is-drawer-close:hidden w-20">My Events</span>
+              </NavLink>
+            </li>
+          )}
           {/* List item  #TODO: hide until loggedIn*/}
           {user && (
             <li>
