@@ -88,29 +88,16 @@ export function addUser(email: string, password: string): Promise<object> {
     });
 }
 
-type LoginRequest = {
-  token: string;
-  user: {
-    id: number;
-    email: string;
-  };
-};
-async function signIn(email: string, password: string): Promise<LoginRequest> {
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: email, password: password }),
-  };
-
-  const res = await fetch(apiBaseUrl + "api/auth/login", requestOptions);
-
-  const data: LoginRequest = await res.json();
+async function fetchData<T>(url: string, options?: RequestInit): Promise<T> {
+  const res = await fetch(url, options);
 
   if (!res.ok) {
-    throw new Error(data.error || "Something went wrong");
+    const data = await res.json();
+
+    throw new Error(data.error);
   }
 
-  return data;
+  return res.json();
 }
 
-export { apiBaseUrl, createUser, fetchEvents, type EventsRequest, signIn };
+export { apiBaseUrl, createUser, fetchEvents, type EventsRequest, fetchData };

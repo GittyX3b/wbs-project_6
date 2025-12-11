@@ -6,7 +6,12 @@
 }
 
 @import "@styles/text.css";
+@import "leaflet/dist/leaflet.css";
 
 .maxwidth-app {
   max-width: 100%;
+}
+
+.leaflet-container {
+  height: 400px;
 }

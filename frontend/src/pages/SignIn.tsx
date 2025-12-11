@@ -16,7 +16,7 @@ const SignIn = () => {
   const [formData, setFormData] = useState<FormData>(initialState);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [error, setError] = useState({});
+  const [error, setError] = useState<string | null>();
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -39,8 +39,8 @@ const SignIn = () => {
         await login(formData.email, formData.password);
 
         navigate("/create-event");
-      } catch (err) {
-        setError(err);
+      } catch (err: unknown) {
+        if (err instanceof Error) setError(err.message);
       } finally {
         setLoading(false);
       }
@@ -88,7 +88,7 @@ const SignIn = () => {
           {loading ? "Login ..." : "Login"}
         </button>
       </form>
-      {error.message && <p className="text-red-600">{error.message}</p>}
+      {error && <p className="text-red-600">{error}</p>}
     </div>
   );
 };

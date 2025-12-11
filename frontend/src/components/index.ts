@@ -3,5 +3,6 @@ import { NavDrawer } from "@components/NavDrawer";
 import { EventCard } from "@components/EventCard";
 import { Footer } from "@components/Footer";
 import { Hero } from "@components/Hero";
+import { Map } from "@components/Map";
 
-export { EventCard, NavBar, NavDrawer, Footer, Hero };
+export { EventCard, NavBar, NavDrawer, Footer, Hero, Map };
