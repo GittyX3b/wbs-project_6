@@ -1,21 +1,25 @@
 const apiBaseUrl: string = "http://localhost:3001/";
 
+type Event = {
+  id: number;
+  title: string;
+  description: string;
+  date: Date;
+  location: string;
+  latitude: number;
+  longitude: number;
+  organizerId: number;
+  createdAt: Date | null;
+  updatedAt?: Date | null;
+};
+
 type EventsRequest = {
   totalCount: number;
   totalPages: number;
   currentPage: number;
   hasNextPage: boolean;
   hasPreviousPage: boolean;
-  results: any[];
-};
-
-type Events = {
-  title: string;
-  description: string;
-  date: Date;
-  location: string | Location;
-  latitude?: number;
-  longitude?: number;
+  results: Event[];
 };
 
 type Location = {
@@ -88,16 +92,34 @@ export function addUser(email: string, password: string): Promise<object> {
     });
 }
 
+async function deleteEventInDB(eventId: number): Promise<{ success: boolean }> {
+  const requestUrl = apiBaseUrl + "api/events/" + eventId;
+  const requestOptions = {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  };
+
+  return await fetchData(requestUrl, requestOptions);
+}
+
 async function fetchData<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, options);
 
   if (!res.ok) {
     const data = await res.json();
-
     throw new Error(data.error);
   }
 
   return res.json();
 }
 
-export { apiBaseUrl, createUser, fetchEvents, type EventsRequest, fetchData };
+export {
+  apiBaseUrl,
+  createUser,
+  fetchEvents,
+  type EventsRequest,
+  fetchData,
+  deleteEventInDB,
+};
