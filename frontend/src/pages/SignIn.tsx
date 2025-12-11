@@ -42,7 +42,7 @@ const SignIn = () => {
         setLoading(true);
         await login(formData.email, formData.password);
 
-        navigate("/create-event");
+        navigate("/my-events");
       } catch (err: unknown) {
         if (err instanceof Error) setError(err.message);
       } finally {
