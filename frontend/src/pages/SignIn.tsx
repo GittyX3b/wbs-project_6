@@ -1,5 +1,10 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import {
+  type ChangeEventHandler,
+  type FormEventHandler,
+  useEffect,
+  useState,
+} from "react";
+import { useNavigate, Link } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
 
 const initialState = {
@@ -15,19 +20,23 @@ type FormData = {
 const SignIn = () => {
   const [formData, setFormData] = useState<FormData>(initialState);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Partial<FormData>>({});
   const [error, setError] = useState<string | null>();
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  useEffect(() => {
+    if (user) navigate("/my-events");
+  });
+
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value.trim(),
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     const validationErrors = validate(formData);
@@ -37,58 +46,73 @@ const SignIn = () => {
       try {
         setLoading(true);
         await login(formData.email, formData.password);
-
-        navigate("/create-event");
       } catch (err: unknown) {
         if (err instanceof Error) setError(err.message);
-      } finally {
         setLoading(false);
       }
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center px-4">
       <h1 className="font-bold text-2xl text-shadow-gray-500 text-shadow-2xs m-4">
         Sign In
       </h1>
-      <form className="flex flex-col" onSubmit={handleSubmit}>
-        <label className="text-black font-bold" htmlFor="email">
-          E-Mail:
-        </label>
-        <input
-          className="border-2 rounded-md mb-2 text-black p-0.4"
-          type="email"
-          name="email"
-          id="email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        {errors.email && (
-          <p className="text-sm text-red-600 mb-2">{errors.email}</p>
-        )}
-        <label className="text-black font-bold" htmlFor="password">
-          Password:
-        </label>
-        <input
-          className="border-2 rounded-md mb-2 text-black p-0.4"
-          type="password"
-          name="password"
-          id="password"
-          onChange={handleChange}
-        />
-        {errors.password && (
-          <p className="text-sm text-red-600">{errors.password}</p>
-        )}
-        <button
-          className="btn btn-sm mt-2 mb-2 hover:bg-gray-600 disabled:bg-gray-600"
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? "Login ..." : "Login"}
-        </button>
-      </form>
-      {error && <p className="text-red-600">{error}</p>}
+      <div className="card card-xl w-full md:max-w-xl bg-base-200 shadow-sm p-4">
+        <form onSubmit={handleSubmit} className="w-full">
+          <fieldset className="fieldset mb-4">
+            <label
+              className="fieldset-legend text-sm font-bold"
+              htmlFor="email"
+            >
+              E-Mail:
+            </label>
+            <input
+              className="w-full input"
+              type="email"
+              name="email"
+              id="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            {errors.email && (
+              <p className="text-sm text-red-600 mb-2">{errors.email}</p>
+            )}
+            <label
+              className="fieldset-legend text-sm font-bold"
+              htmlFor="password"
+            >
+              Password:
+            </label>
+            <input
+              className="w-full input"
+              type="password"
+              name="password"
+              id="password"
+              onChange={handleChange}
+            />
+            {errors.password && (
+              <p className="text-sm text-red-600">{errors.password}</p>
+            )}
+          </fieldset>
+          <div className="card-actions justify-end">
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? "Login ..." : "Login"}
+            </button>
+          </div>
+        </form>
+        <p>
+          Need an account?
+          <Link to="/signup" className="link ml-2">
+            Sign up
+          </Link>
+        </p>
+      </div>
+      {error && <p className="text-red-600 font-bold my-2">{error}</p>}
     </div>
   );
 };
