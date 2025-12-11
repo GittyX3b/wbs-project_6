@@ -19,7 +19,7 @@ type SignUpState =
 export function SignUp() {
   const [signUpState, setSignUpState] = useState((): SignUpState => "init");
   const [redirect, SetRedirect] = useState("");
-  const { user } = useAuth();
+  const { user, login } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,32 +28,30 @@ export function SignUp() {
 
   function submitSignUp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    const email = event.currentTarget.email.value.trim();
+    const password = event.currentTarget.password.value.trim();
+
     console.log("Sign Up Submit Event");
 
-    console.log(event.currentTarget.password.value);
+    // console.log(event.currentTarget.password.value);
     let newSignUpState: SignUpState = "init";
 
-    if (event.currentTarget.email.value.length === 0)
-      newSignUpState = "noEmail";
-    else if (event.currentTarget.password.value.length === 0)
-      newSignUpState = "noPass";
-    else if (event.currentTarget.password.value.length < 8)
-      newSignUpState = "passTooShort";
+    if (email.length === 0) newSignUpState = "noEmail";
+    else if (password.length === 0) newSignUpState = "noPass";
+    else if (password.length < 8) newSignUpState = "passTooShort";
 
     setSignUpState(newSignUpState);
-    console.log("signUpState:", newSignUpState);
-    console.log("email", event.currentTarget.email.value);
-    console.log("pass:", event.currentTarget.password.value);
+    // console.log("signUpState:", newSignUpState);
+    // console.log("email", event.currentTarget.email.value);
+    // console.log("pass:", event.currentTarget.password.value);
     if (newSignUpState !== "init") {
       console.log("Returned");
       return;
     }
 
     setSignUpState("fetching");
-    addUser(
-      event.currentTarget.email.value,
-      event.currentTarget.password.value
-    ).then((data) => {
+    addUser(email, password).then((data) => {
       /* Error case: Response Code 400, 409 */
       if ("error" in data) {
         console.error("Error Case:", data);
@@ -61,8 +59,11 @@ export function SignUp() {
         else setSignUpState("badRequest");
         /* Success: Response Code 200 */
       } else {
-        console.log("Success case:", data);
+        // console.log("Success case:", data);
+        setSignUpState("success");
         SetRedirect("signin");
+
+        setTimeout(() => login(email, password), 1000);
       }
     });
   }
@@ -122,18 +123,21 @@ export function SignUp() {
             </Link>
           </p>
         </div>
+        {signUpState === "success" && (
+          <p className="text-success font-bold mt-2">
+            🎉 Your account has been created. Logging you in...
+          </p>
+        )}
         <p className="text-red-600 font-bold mt-2">
           {signUpState === "userExist"
             ? "⚠️ User already exists ⚠️"
             : signUpState === "badRequest" || signUpState === "passTooShort"
               ? "⚠️ Password too short! At least 8 characters ⚠️"
-              : signUpState === "success"
-                ? "Sign up successful!"
-                : signUpState === "noEmail"
-                  ? "⚠️ Please enter E-Mail address ⚠️"
-                  : signUpState === "noPass"
-                    ? "⚠️ Please enter password with at least 8 characters ⚠️"
-                    : "Please fill out form for sign up"}
+              : signUpState === "noEmail"
+                ? "⚠️ Please enter E-Mail address ⚠️"
+                : signUpState === "noPass"
+                  ? "⚠️ Please enter password with at least 8 characters ⚠️"
+                  : ""}
         </p>
       </div>
     </>
