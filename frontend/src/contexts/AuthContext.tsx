@@ -18,7 +18,7 @@ type AuthContextType = {
   logout: () => void;
 };
 
-const AuthContext = createContext<AuthContextType | null>({
+const AuthContext = createContext<AuthContextType>({
   token: null,
   user: null,
   login: () => {},
