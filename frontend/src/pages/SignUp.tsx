@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
 import { addUser } from "../utils/apiAccess";
@@ -19,50 +19,52 @@ type SignUpState =
 export function SignUp() {
   const [signUpState, setSignUpState] = useState((): SignUpState => "init");
   const [redirect, SetRedirect] = useState("");
-  const { user, login } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user) navigate("/my-events");
   });
 
-  function submitSignUp(event) {
+  function submitSignUp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     console.log("Sign Up Submit Event");
 
-    console.log(event.target.password.value);
+    console.log(event.currentTarget.password.value);
     let newSignUpState: SignUpState = "init";
 
-    if (event.target.email.value.length === 0) newSignUpState = "noEmail";
-    else if (event.target.password.value.length === 0)
+    if (event.currentTarget.email.value.length === 0)
+      newSignUpState = "noEmail";
+    else if (event.currentTarget.password.value.length === 0)
       newSignUpState = "noPass";
-    else if (event.target.password.value.length < 8)
+    else if (event.currentTarget.password.value.length < 8)
       newSignUpState = "passTooShort";
 
     setSignUpState(newSignUpState);
     console.log("signUpState:", newSignUpState);
-    console.log("email", event.target.email.value);
-    console.log("pass:", event.target.password.value);
+    console.log("email", event.currentTarget.email.value);
+    console.log("pass:", event.currentTarget.password.value);
     if (newSignUpState !== "init") {
       console.log("Returned");
       return;
     }
 
     setSignUpState("fetching");
-    addUser(event.target.email.value, event.target.password.value).then(
-      (data) => {
-        /* Error case: Response Code 400, 409 */
-        if ("error" in data) {
-          console.error("Error Case:", data);
-          if (data.error === "User Already Exist") setSignUpState("userExist");
-          else setSignUpState("badRequest");
-          /* Success: Response Code 200 */
-        } else {
-          console.log("Success case:", data);
-          SetRedirect("signin");
-        }
+    addUser(
+      event.currentTarget.email.value,
+      event.currentTarget.password.value
+    ).then((data) => {
+      /* Error case: Response Code 400, 409 */
+      if ("error" in data) {
+        console.error("Error Case:", data);
+        if (data.error === "User Already Exist") setSignUpState("userExist");
+        else setSignUpState("badRequest");
+        /* Success: Response Code 200 */
+      } else {
+        console.log("Success case:", data);
+        SetRedirect("signin");
       }
-    );
+    });
   }
 
   return (
