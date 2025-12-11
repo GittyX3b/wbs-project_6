@@ -46,7 +46,10 @@ const EventCard = ({
               <Trash size={18} />
             </button>
           )}
-          <NavLink to={`event/${id}`} className="btn btn-soft btn-info w-full ">
+          <NavLink
+            to={`/event/${id}`}
+            className="btn btn-soft btn-info w-full "
+          >
             See Details
           </NavLink>
           {editable && (
