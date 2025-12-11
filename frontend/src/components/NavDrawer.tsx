@@ -4,7 +4,7 @@ import { House, CalendarPlus2, CalendarDays } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 
 export function NavDrawer() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div className="drawer-side is-drawer-close:overflow-visible shadow-lg">

@@ -1,3 +1,5 @@
+import { type FormOutputType } from "@pages/CreateEvent";
+
 const apiBaseUrl: string = "http://localhost:3001/";
 
 type Event = {
@@ -92,6 +94,25 @@ export function addUser(email: string, password: string): Promise<object> {
     });
 }
 
+async function createEventInDB(
+  eventData: FormOutputType
+): Promise<{ success: boolean }> {
+  const requestUrl = apiBaseUrl + "api/events/";
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify(eventData),
+  };
+
+  const response = await fetch(requestUrl, requestOptions);
+  const data = await response.json();
+
+  return { success: !!data.id }; // true, wenn Event erstellt
+}
+
 async function deleteEventInDB(eventId: number): Promise<{ success: boolean }> {
   const requestUrl = apiBaseUrl + "api/events/" + eventId;
   const requestOptions = {
@@ -121,5 +142,6 @@ export {
   fetchEvents,
   type EventsRequest,
   fetchData,
+  createEventInDB,
   deleteEventInDB,
 };

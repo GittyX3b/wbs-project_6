@@ -50,7 +50,7 @@ const MyEvents = () => {
           {eventData?.results
             .filter((item) => item.organizerId === user.id)
             .map((item) => {
-              return <EventCard {...item} editable="true" key={item.id} />;
+              return <EventCard {...item} editable={true} key={item.id} />;
             })}
         </div>
       </div>
