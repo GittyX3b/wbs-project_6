@@ -7,6 +7,7 @@ import {
   MyEvents,
   AboutUs,
   Contact,
+  NotFound,
 } from "@pages";
 import { Route, Routes } from "react-router";
 import { SignUp } from "./pages/SignUp";
@@ -26,6 +27,7 @@ function App() {
           <Route path="/event/:id" element={<EventDetails />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </>
