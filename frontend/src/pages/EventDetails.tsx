@@ -78,11 +78,13 @@ const EventDetails = () => {
       <div className="card bg-base-200 shadow-sm" id="map">
         <div className="card-body">
           <p className="font-bold">{event.location}</p>
-          <Map
-            location={event.location}
-            latitude={event.latitude}
-            longitude={event.longitude}
-          />
+          {event.latitude && event.longitude && (
+            <Map
+              location={event.location}
+              latitude={event.latitude}
+              longitude={event.longitude}
+            />
+          )}
         </div>
       </div>
     </div>

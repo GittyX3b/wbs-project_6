@@ -28,9 +28,6 @@ const EventCard = ({
     }
   };
 
-  const handleEventEdit = (eventId: number) =>
-    console.log("edit event " + eventId);
-
   return (
     <div
       id={`event-card-${id}`}
@@ -66,12 +63,12 @@ const EventCard = ({
             See Details
           </NavLink>
           {editable && (
-            <button
+            <NavLink
+              to={`/edit-event/${id}`}
               className="btn btn-soft btn-warning p-0"
-              onClick={() => handleEventEdit(id)}
             >
               <Pencil size={18} />
-            </button>
+            </NavLink>
           )}
         </div>
       </div>
