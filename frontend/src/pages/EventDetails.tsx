@@ -35,7 +35,7 @@ const EventDetails = () => {
 
   if (!event) {
     return (
-      <div className="bg-green-200 min-h-screen p-15">
+      <div className="min-h-screen p-15">
         <h2>Event Not Found</h2>
         <p>Sorry, we couldn't find the event you're looking for.</p>
       </div>
@@ -52,7 +52,7 @@ const EventDetails = () => {
   });
 
   return (
-    <div className="bg-green-200 min-h-screen p-15">
+    <div className="min-h-screen p-15">
       <h1 className="font-bold text-2xl text-shadow-gray-500 text-shadow-2xs m-4">
         {event.title}
       </h1>
