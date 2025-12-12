@@ -86,7 +86,11 @@ const EventForm = ({ event }: EventFormProps) => {
             <input
               type="datetime-local"
               id="date"
-              defaultValue={event?.date ?? ""}
+              defaultValue={
+                event?.date
+                  ? new Date(event.date).toISOString().slice(0, 16)
+                  : ""
+              }
               name="date"
               placeholder="Event Date"
               className="input input-md w-full placeholder:font-bold "
