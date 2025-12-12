@@ -4,6 +4,7 @@ import {
   EventDetails,
   SignIn,
   CreateEvent,
+  EditEvent,
   MyEvents,
   AboutUs,
   Contact,
@@ -22,6 +23,7 @@ function App() {
           <Route path="/login" element={<SignIn />} />
           <Route element={<ProtectedLayout />}>
             <Route path="/create-event" element={<CreateEvent />} />
+            <Route path="/edit-event/:id" element={<EditEvent />} />
             <Route path="/my-events" element={<MyEvents />} />
           </Route>
           <Route path="/event/:id" element={<EventDetails />} />

@@ -1,4 +1,4 @@
-import { type FormOutputType } from "@pages/CreateEvent";
+import { type FormOutputType } from "@components/EventForm";
 
 const apiBaseUrl: string = "http://localhost:3001/";
 
@@ -125,6 +125,23 @@ async function deleteEventInDB(eventId: number): Promise<{ success: boolean }> {
   return await fetchData(requestUrl, requestOptions);
 }
 
+async function updateEventInDB(
+  id: number,
+  eventData: FormOutputType
+): Promise<{ success: boolean }> {
+  const requestUrl = apiBaseUrl + "api/events/" + id;
+  const requestOptions = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify(eventData),
+  };
+
+  return await fetchData(requestUrl, requestOptions);
+}
+
 async function fetchData<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, options);
 
@@ -143,5 +160,6 @@ export {
   type EventsRequest,
   fetchData,
   createEventInDB,
+  updateEventInDB,
   deleteEventInDB,
 };
