@@ -33,7 +33,7 @@ const Home = () => {
     <div>
       <Hero />
       <div className="p-15">
-        <h2>Upcoming Events ({eventData?.length})</h2>
+        <h2 id="upcoming">Upcoming Events ({eventData?.length})</h2>
 
         <div className="grid md:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr] 2xl:grid-cols-[1fr_1fr_1fr_1fr] gap-5">
           {eventData?.map((item: Event) => {
