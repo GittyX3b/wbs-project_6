@@ -6,8 +6,8 @@ import { useAuth } from "../contexts/AuthContext";
 
 const MyEvents = () => {
   const { user } = useAuth();
-  const [page, _setPage] = useState(1);
-  const [limit, _setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const [limit, _setLimit] = useState(9);
   const [eventData, setEventData] = useState<EventsRequest | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,14 +34,38 @@ const MyEvents = () => {
   return (
     user && (
       <div className="p-15">
-        <h2>
-          My Events (
-          {
-            eventData?.results.filter((item) => item.organizerId === user.id)
-              .length
-          }
-          )
-        </h2>
+        <div className="flex items-center gap-10">
+          <h2>
+            My Events (
+            {
+              eventData?.results.filter((item) => item.organizerId === user.id)
+                .length
+            }
+            )
+          </h2>
+          <div className="gap-3 grid grid-cols-[30px_1fr_30px] w-40 bg-neutral-100 p-1 rounded">
+            {eventData?.hasPreviousPage && (
+              <button
+                className="btn btn-xs col-start-1"
+                onClick={() => setPage((prev) => prev - 1)}
+              >
+                -
+              </button>
+            )}
+            <p className="text-zinc-500 font-bold  col-start-2 m-auto">
+              <span className="pr-2">Seite</span>
+              {eventData?.currentPage}
+            </p>
+            {eventData?.hasNextPage && (
+              <button
+                className="btn btn-xs  col-start-3"
+                onClick={() => setPage((prev) => prev + 1)}
+              >
+                +
+              </button>
+            )}
+          </div>
+        </div>
 
         <div
           className="grid md:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr] 2xl:grid-cols-[1fr_1fr_1fr_1fr] gap-5"

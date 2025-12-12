@@ -52,6 +52,24 @@ async function fetchEvents(
   }
 }
 
+async function fetchUpcomingEvents(): Promise<Event[]> {
+  const fetchUrl: string = apiBaseUrl + "api/events/upcoming";
+
+  try {
+    const res = await fetch(fetchUrl);
+
+    if (!res.ok) {
+      throw new Error(`HTTP Error: ${res.status} ${res.statusText}`);
+    }
+
+    const data: Event[] = await res.json();
+    return data;
+  } catch (error) {
+    console.error("fetchEvents Error:", error);
+    throw error;
+  }
+}
+
 function createUser(): void;
 
 function regexCheckEmail(input: string): boolean {
@@ -155,9 +173,11 @@ async function fetchData<T>(url: string, options?: RequestInit): Promise<T> {
 
 export {
   apiBaseUrl,
+  type Event,
+  type EventsRequest,
   createUser,
   fetchEvents,
-  type EventsRequest,
+  fetchUpcomingEvents,
   fetchData,
   createEventInDB,
   updateEventInDB,

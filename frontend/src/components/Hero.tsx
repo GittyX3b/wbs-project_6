@@ -16,7 +16,21 @@ const Hero = () => {
             excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
             a id nisi.
           </p>
-          <button className="btn btn-primary">Get Started</button>
+          <button
+            className="btn btn-primary btn-soft"
+            onClick={() => {
+              const section = document.getElementById("upcoming");
+              if (section) {
+                const y =
+                  section.getBoundingClientRect().top +
+                  window.pageYOffset -
+                  100; // 100px offset because fixed header
+                window.scrollTo({ top: y, behavior: "smooth" });
+              }
+            }}
+          >
+            Upcoming Events
+          </button>
         </div>
       </div>
     </div>
