@@ -1,90 +1,184 @@
-import { useState } from "react";
+import { createEventInDB } from "@utils/apiAccess";
+import { useNavigate } from "react-router";
 
-/**
- * Define string literal type CreateEventState
- */
-type CreateEventState = "fetching" | "init" | "emptyFields";
+export type FormOutputType = {
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+  longitude: number | null;
+  latitude: number | null;
+};
 
 export function CreateEvent() {
-  const [createEventState, SetCreateEventState] = useState(() => "init");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // verhindert Page Reload
+
+    const formData = new FormData(e.currentTarget);
+
+    const formOutput: FormOutputType = {
+      title: formData.get("title") as string,
+      description: formData.get("description") as string,
+      date: formData.get("date") as string,
+      location: mergeLocation(formData),
+      longitude: formData.get("longitude")
+        ? Number(formData.get("longitude"))
+        : null,
+      latitude: formData.get("latitude")
+        ? Number(formData.get("latitude"))
+        : null,
+    };
+
+    try {
+      const res = await createEventInDB(formOutput);
+      if (res.success) {
+        // navigation direkt nach erfolgreichem POST
+        navigate("/my-events", { replace: true });
+      } else {
+        console.error("Event creation failed:", res);
+      }
+    } catch (err) {
+      console.error("Error creating event:", err);
+    }
+  };
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-center">
-        <h1 className="font-bold text-2xl text-shadow-gray-500 text-shadow-2xs m-4">
-          Create Event
-        </h1>
-        <form className="flex flex-col">
-          <label className="font-bold" htmlFor="title">
-            Title:
-          </label>
-          <input className="input mb-2" type="text" name="title" id="title" />
-          <label className="font-bold" htmlFor="description">
-            Description:
-          </label>
-          <textarea
-            className="textarea mb-2"
-            name="description"
-            id="description"
-          ></textarea>
-          <label className="font-bold" htmlFor="date">
-            Date:
-          </label>
-          <input
-            className="input mb-2"
-            type="datetime-local"
-            name="date"
-            id="date"
-          />
-          <label className="font-bold mb-2" htmlFor="street">
-            Location:
-          </label>
-          {/* <input
-            className="input mb-2"
-            type="text"
-            name="location"
-            id="location"
-          /> */}
-          <label className="floating-label mb-3">
+    <div className="p-15">
+      <h2>Create Event</h2>
+      <form className="grid grid-cols-[1fr_2fr] gap-5" onSubmit={handleSubmit}>
+        <fieldset className="flex flex-col justify-start">
+          <label className="floating-label mb-10">
             <input
               type="text"
-              id="street"
-              name="street"
-              placeholder="Street & number"
-              className="input input-md"
+              id="title"
+              name="title"
+              placeholder="Event Title"
+              className="input input-md w-full placeholder:font-bold "
+              required
             />
-            <span>Street & number</span>
+            <span className="text-xl font-bold">Event Title</span>
           </label>
-          <label className="floating-label mb-3">
+
+          <label className="floating-label mb-10">
             <input
-              type="text"
-              id="postaCode"
-              name="postalCode"
-              placeholder="Postal code"
-              className="input input-md"
+              type="datetime-local"
+              id="date"
+              name="date"
+              placeholder="Event Date"
+              className="input input-md w-full placeholder:font-bold "
+              required
+              onInput={(e) => (e.target as HTMLInputElement).blur()}
             />
-            <span>Postal code</span>
+            <span className="text-xl font-bold">Event Date</span>
           </label>
-          <label className="floating-label mb-3">
-            <input
-              type="text"
-              id="city"
-              name="city"
-              placeholder="City"
-              className="input input-md"
-            />
-            <span>City</span>
+
+          <div className="text-xl font-bold p-6 pl-4">Location</div>
+          <div className="grid grid-cols-2 gap-4">
+            <label className="floating-label mb-5">
+              <input
+                type="text"
+                id="streetNumber"
+                name="streetNumber"
+                placeholder="Street and Number"
+                className="input input-md w-full placeholder:font-bold "
+              />
+              <span className="text-xl font-bold">Street and Number</span>
+            </label>
+            <label className="floating-label mb-5">
+              <input
+                type="text"
+                id="city"
+                name="city"
+                placeholder="City"
+                className="input input-md w-full placeholder:font-bold "
+              />
+              <span className="text-xl font-bold">City</span>
+            </label>
+            <label className="floating-label mb-5">
+              <input
+                type="text"
+                id="postalcode"
+                name="postalcode"
+                placeholder="Postal Code"
+                className="input input-md w-full placeholder:font-bold "
+              />
+              <span className="text-xl font-bold">Postal Code</span>
+            </label>
+            <label className="floating-label mb-5">
+              <input
+                type="text"
+                id="Country"
+                name="Country"
+                placeholder="Country"
+                className="input input-md w-full placeholder:font-bold "
+              />
+              <span className="text-xl font-bold">Country</span>
+            </label>
+            <label className="floating-label">
+              <input
+                type="number"
+                id="longitude"
+                name="longitude"
+                placeholder="Longitude"
+                className="input input-md w-full placeholder:font-bold "
+              />
+              <span className="text-xl font-bold">Longitude</span>
+            </label>
+            <label className="floating-label">
+              <input
+                type="number"
+                id="latitude"
+                name="latitude"
+                placeholder="Latitude"
+                className="input input-md w-full placeholder:font-bold "
+              />
+              <span className="text-xl font-bold">Latitude</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset className="gap-3 h-full">
+          <label className="floating-label mb-3 h-full">
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Event Description"
+              className="input input-md p-3 w-full min-h-full placeholder:font-bold"
+            ></textarea>
+            <span className="text-xl font-bold">Event Description</span>
           </label>
-          <button className="btn btn-primary mt-6" type="submit">
-            Create event
-          </button>
-        </form>
-        <p className="text-red-600 font-bold mt-2">
-          {createEventState === "emptyFields"
-            ? "⚠️ There are empty fields ⚠️"
-            : "Please fill out form"}
-        </p>
-      </div>
-    </>
+        </fieldset>
+
+        <button
+          className="btn btn-primary btn-soft btn-xl mt-6 col-span-2 py-20"
+          type="submit"
+        >
+          Create event
+        </button>
+      </form>
+    </div>
   );
 }
+
+function mergeLocation(formData: FormData): string {
+  const street = formData.get("streetNumber") as string;
+  const postal = formData.get("postalcode") as string;
+  const city = formData.get("city") as string;
+  const country = formData.get("Country") as string;
+
+  return `${street}, ${postal} ${city}, ${country}`;
+}
+
+// const validate = ({ name, email, message }) => {
+//   const newErrors = {};
+//   if (!name.trim()) newErrors.name = 'Name is required.';
+//   if (!email.trim()) {
+//     newErrors.email = 'Email is required.';
+//   } else if (!/\S+@\S+\.\S+/.test(email)) {
+//     newErrors.email = 'Invalid email format.';
+//   }
+//   if (!message.trim()) newErrors.message = 'Message is required.';
+//   return newErrors;
+// };

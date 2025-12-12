@@ -58,6 +58,7 @@ export const deleteOne = asyncWrapper(async (req, res, next) => {
   const {
     params: { id },
   } = req;
+
   const deleted = await req.model.destroy({
     where: { id },
   });
@@ -65,5 +66,7 @@ export const deleteOne = asyncWrapper(async (req, res, next) => {
   if (!deleted) {
     throw new ErrorResponse("Record not found", 404);
   }
-  res.status(204).end();
+
+  // JSON zurückgeben, damit Frontend res.json() parsen kann
+  res.status(200).json({ success: true });
 });

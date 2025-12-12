@@ -25,8 +25,6 @@ const Home = () => {
     loadEvents();
   }, [page, limit]); // ← Nur primitive Values als Dependencies
 
-  console.log("eventData:", eventData);
-
   if (loading) return <div>Lädt...</div>;
   if (error) return <div>Fehler: {error}</div>;
 
