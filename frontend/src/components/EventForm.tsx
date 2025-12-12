@@ -78,9 +78,10 @@ const EventForm = ({ event }: EventFormProps) => {
               name="title"
               placeholder="Event Title"
               className="input input-md w-full placeholder:font-bold "
-              required
             />
-            <span className="text-xl font-bold rounded-xl">Event Date</span>
+            <span className="text-xl font-bold rounded-xl px-2">
+              Event Date
+            </span>
           </label>
           <label className="floating-label mb-10">
             <input
@@ -94,10 +95,10 @@ const EventForm = ({ event }: EventFormProps) => {
               name="date"
               placeholder="Event Date"
               className="input input-md w-full placeholder:font-bold "
-              required
-              onInput={(e) => (e.target as HTMLInputElement).blur()}
             />
-            <span className="text-xl font-bold">Event Date</span>
+            <span className="text-xl font-bold rounded-xl px-2">
+              Event Date
+            </span>
           </label>
 
           <div className="text-xl font-bold p-6 pl-4">Location</div>
@@ -113,7 +114,7 @@ const EventForm = ({ event }: EventFormProps) => {
                 placeholder="Street and Number"
                 className="input input-md w-full placeholder:font-bold "
               />
-              <span className="text-xl font-bold rounded-xl">
+              <span className="text-xl font-bold rounded-xl px-2">
                 Street and Number
               </span>
             </label>
@@ -128,7 +129,7 @@ const EventForm = ({ event }: EventFormProps) => {
                 placeholder="City"
                 className="input input-md w-full placeholder:font-bold "
               />
-              <span className="text-xl font-bold rounded-xl">City</span>
+              <span className="text-xl font-bold rounded-xl px-2">City</span>
             </label>
             <label className="floating-label mb-5">
               <input
@@ -143,7 +144,9 @@ const EventForm = ({ event }: EventFormProps) => {
                 placeholder="Postal Code"
                 className="input input-md w-full placeholder:font-bold "
               />
-              <span className="text-xl font-bold rounded-xl">Postal Code</span>
+              <span className="text-xl font-bold rounded-xl px-2">
+                Postal Code
+              </span>
             </label>
             <label className="floating-label mb-5">
               <input
@@ -156,7 +159,7 @@ const EventForm = ({ event }: EventFormProps) => {
                 placeholder="Country"
                 className="input input-md w-full placeholder:font-bold "
               />
-              <span className="text-xl font-bold rounded-xl">Country</span>
+              <span className="text-xl font-bold rounded-xl px-2">Country</span>
             </label>
             <label className="floating-label mb-5  sm:mb-0">
               <input
@@ -165,9 +168,12 @@ const EventForm = ({ event }: EventFormProps) => {
                 defaultValue={event?.longitude ?? ""}
                 name="longitude"
                 placeholder="Longitude"
+                step="any"
                 className="input input-md w-full placeholder:font-bold "
               />
-              <span className="text-xl font-bold rounded-xl">Longitude</span>
+              <span className="text-xl font-bold rounded-xl px-2">
+                Longitude
+              </span>
             </label>
             <label className="floating-label mb-5 sm:mb-0">
               <input
@@ -176,9 +182,12 @@ const EventForm = ({ event }: EventFormProps) => {
                 defaultValue={event?.latitude ?? ""}
                 name="latitude"
                 placeholder="Latitude"
+                step="any"
                 className="input input-md w-full placeholder:font-bold "
               />
-              <span className="text-xl font-bold rounded-xl">Latitude</span>
+              <span className="text-xl font-bold rounded-xl px-2">
+                Latitude
+              </span>
             </label>
           </div>
         </fieldset>
@@ -190,9 +199,9 @@ const EventForm = ({ event }: EventFormProps) => {
               defaultValue={event?.description ?? ""}
               name="description"
               placeholder="Event Description"
-              className="input input-md p-3 w-full min-h-full placeholder:font-bold"
+              className="input input-md p-3 w-full min-h-full placeholder:font-bold whitespace-pre-line"
             ></textarea>
-            <span className="text-xl font-bold rounded-xl">
+            <span className="text-xl font-bold rounded-xl px-2">
               Event Description
             </span>
           </label>
