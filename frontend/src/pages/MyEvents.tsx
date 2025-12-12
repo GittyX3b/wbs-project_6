@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 const MyEvents = () => {
   const { user } = useAuth();
   const [page, _setPage] = useState(1);
-  const [limit, _setLimit] = useState(10);
+  const [limit, _setLimit] = useState(20);
   const [eventData, setEventData] = useState<EventsRequest | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

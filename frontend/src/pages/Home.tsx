@@ -1,11 +1,12 @@
-import { fetchEvents, type EventsRequest } from "@utils";
-import { useEffect, useState } from "react";
+import { type Event, fetchUpcomingEvents } from "@utils";
+import { useEffect, useState, type SetStateAction } from "react";
 import { EventCard, Hero } from "@components";
 
 const Home = () => {
   const [page, _setPage] = useState(1);
   const [limit, _setLimit] = useState(10);
-  const [eventData, setEventData] = useState<EventsRequest | null>(null);
+  const [eventData, setEventData] =
+    useState<SetStateAction<Event[] | null>>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -13,7 +14,7 @@ const Home = () => {
     const loadEvents = async () => {
       setLoading(true);
       try {
-        const data = await fetchEvents(page, limit);
+        const data = await fetchUpcomingEvents();
         setEventData(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Fehler beim Laden");
@@ -32,10 +33,10 @@ const Home = () => {
     <div>
       <Hero />
       <div className="p-15">
-        <h2>Upcoming Events ({eventData?.totalCount})</h2>
+        <h2>Upcoming Events ({eventData?.length})</h2>
 
         <div className="grid md:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr] 2xl:grid-cols-[1fr_1fr_1fr_1fr] gap-5">
-          {eventData?.results.map((item) => {
+          {eventData?.map((item: Event) => {
             return <EventCard {...item} key={item.id} editable={false} />;
           })}
         </div>
